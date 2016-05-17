@@ -3,10 +3,10 @@
 
 #include "linked_list_node.hpp"
 
-template <class T>
+template <typename T>
 class linked_list_iterator
 {
-    template <class U>
+    template <typename U>
     friend class linked_list;
 
     typedef node<T> node;
@@ -25,65 +25,64 @@ private:
     node* it_;
 };
 
-template <class T>
+template <typename T>
 linked_list_iterator<T>::linked_list_iterator(node* it) : it_(it) {}
 
-template <class T>
+template <typename T>
 T& linked_list_iterator<T>::operator*()
 {
+    // TODO: add exception
     return it_->data_;
 }
 
-template <class T>
+template <typename T>
 T* linked_list_iterator<T>::operator->()
 {
+    // TODO: add exception
     return &(operator*());
 }
 
-template <class T>
+template <typename T>
 linked_list_iterator<T>& linked_list_iterator<T>::operator++()
 {
-    if (it_) it_ = it_->next_;
+    // TODO: add exception
+    it_ = it_->next_;
     return *this;
 }
 
-template <class T>
+template <typename T>
 linked_list_iterator<T> linked_list_iterator<T>::operator++(int)
 {
+    // TODO: add exception
     linked_list_iterator tmp(*this);
-    if (it_) it_ = it_->next_;
+    it_ = it_->next_;
     return tmp;
 }
 
-template <class T>
+template <typename T>
 linked_list_iterator<T>& linked_list_iterator<T>::operator--()
 {
-    if (it_ != nullptr)
-    {
-        it_ = it_->prev_;
-    }
+    // TODO: add exception
+    it_ = it_->prev_;
     return *this;
 }
 
-template <class T>
+template <typename T>
 linked_list_iterator<T> linked_list_iterator<T>::operator--(int)
 {
-    if (it_ != nullptr)
-    {
-        linked_list_iterator tmp(*this);
-        it_ = it_->prev_;
-        return tmp;
-    }
-    return *this;
+    // TODO: add exception
+   linked_list_iterator tmp(*this);
+    it_ = it_->prev_;
+    return tmp;
 }
 
-template <class T>
+template <typename T>
 bool linked_list_iterator<T>::operator==(const linked_list_iterator<T>& other) const
 {
     return it_ == other.it_;
 }
 
-template <class T>
+template <typename T>
 bool linked_list_iterator<T>::operator!=(const linked_list_iterator<T>& other) const
 {
     return it_ != other.it_;

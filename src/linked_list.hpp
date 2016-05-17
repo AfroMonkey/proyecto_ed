@@ -3,7 +3,7 @@
 
 #include "linked_list_iterator.hpp"
 
-template <class T>
+template <typename T>
 class linked_list
 {
 public:
@@ -36,30 +36,31 @@ private:
     size_t size_;
 };
 
-template <class T>
+template <typename T>
 linked_list<T>::linked_list() : head_(nullptr), tail_(nullptr), size_(0) {}
 
-template <class T>
+template <typename T>
 linked_list<T>::~linked_list()
 {
     clear();
 }
 
-template <class T>
+template <typename T>
 size_t linked_list<T>::size() const
 {
     return size_;
 }
 
-template <class T>
+template <typename T>
 bool linked_list<T>::empty() const
 {
     return head_ == nullptr;
 }
 
-template <class T>
+template <typename T>
 typename linked_list<T>::iterator linked_list<T>::at(long index)
 {
+    // TODO: add exception
     // if (index >= size_) // throw IndexOutOfBounds
     long l = 0;
     for (iterator it = begin(); it != end(); ++it, ++l)
@@ -69,21 +70,22 @@ typename linked_list<T>::iterator linked_list<T>::at(long index)
             return it;
         }
     }
+    return iterator(); // remove this
 }
 
-template <class T>
+template <typename T>
 typename linked_list<T>::iterator linked_list<T>::begin()
 {
     return iterator(head_);
 }
 
-template <class T>
+template <typename T>
 typename linked_list<T>::iterator linked_list<T>::end()
 {
     return iterator();
 }
 
-template <class T>
+template <typename T>
 typename linked_list<T>::iterator linked_list<T>::find(const T& value)
 {
     iterator it;
@@ -94,7 +96,7 @@ typename linked_list<T>::iterator linked_list<T>::find(const T& value)
     return it;
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::push_front(const T& value)
 {
     node* new_node = construct_node(value);
@@ -108,11 +110,13 @@ void linked_list<T>::push_front(const T& value)
     {
         new_node->next_ = head_;
         new_node->prev_ = nullptr;
+        head_->prev_ = new_node;
         head_ = new_node;
     }
+    ++size_;
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::push_back(const T& value)
 {
     node* new_node = construct_node(value);
@@ -126,11 +130,13 @@ void linked_list<T>::push_back(const T& value)
     {
         new_node->next_ = nullptr;
         new_node->prev_ = tail_;
+        tail_->next_ = new_node;
         tail_ = new_node;
     }
+    ++size_;
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::insert(iterator index, const T& value)
 {
     // if (index >= size_) // throw IndexOutOfBounds
@@ -147,26 +153,27 @@ void linked_list<T>::insert(iterator index, const T& value)
                 it.it_->prev_->next_ = new_node;
                 it.it_->prev_ = new_node;
             }
+            ++size_;
             break;
         }
     }
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::erase(iterator index)
 {
     if (index.it_ == nullptr) return;
     if (index.it_ == head_)
     {
         head_ = index.it_->next_;
-        index.it_->next_->prev_ = nullptr;
+        if (index.it_->next_) index.it_->next_->prev_ = nullptr;
         destroy_node(index.it_);
     }
 
     else if (index.it_ == tail_)
     {
         tail_ = index.it_->prev_;
-        index.it_->prev_->next_ = nullptr;
+        if (index.it_->prev_) index.it_->prev_->next_ = nullptr;
         destroy_node(index.it_);
     }
 
@@ -183,9 +190,10 @@ void linked_list<T>::erase(iterator index)
             }
         }
     }
+    --size_;
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::remove(const T& value)
 {
     for (iterator it = begin(); it != end(); ++it)
@@ -197,29 +205,27 @@ void linked_list<T>::remove(const T& value)
     }
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::clear()
 {
-    for (iterator it = begin(); it != end(); ++it)
+    while(!empty())
     {
-        erase(it);
+        erase(begin());
     }
 }
 
-template <class T>
+template <typename T>
 typename linked_list<T>::node* linked_list<T>::construct_node(const T& value)
 {
     node* new_node = new node(value);
     // check for correct allocation or throw
-    ++size_;
     return new_node;
 }
 
-template <class T>
+template <typename T>
 void linked_list<T>::destroy_node(node* old_node)
 {
     delete old_node;
-    --size_;
 }
 
 #endif
