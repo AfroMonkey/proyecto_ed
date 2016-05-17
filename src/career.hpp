@@ -18,13 +18,13 @@ public:
     Career();
 
     bool set_id(unsigned int id);
-    unsigned int get_id() { return id_; }
+    unsigned int get_id();
     bool set_name(char *name);
-    char* get_name() { return name_; }
+    char* get_name();
     bool set_credits(unsigned int credits);
-    unsigned int get_credits() { return credits_; }
+    unsigned int get_credits();
     bool set_division(char *division);
-    char* get_division() { return division_; }
+    char* get_division();
 
     bool check_credits(); //TODO
 };
@@ -47,6 +47,11 @@ bool Career::set_id(unsigned int id)
     return false;
 }
 
+unsigned int Career::get_id()
+{
+    return id_;
+}
+
 bool Career::set_name(char *name)
 {
     if (name[0] != '\x0')
@@ -60,6 +65,11 @@ bool Career::set_name(char *name)
     return false;
 }
 
+char* Career::get_name()
+{
+    return name_;
+}
+
 bool Career::set_credits(unsigned int credits)
 {
     if (credits >= 0)
@@ -68,6 +78,11 @@ bool Career::set_credits(unsigned int credits)
         return true;
     }
     return false;
+}
+
+unsigned int Career::get_credits()
+{
+    return credits_;
 }
 
 bool Career::set_division(char *division)
@@ -81,6 +96,11 @@ bool Career::set_division(char *division)
         return true;
     }
     return false;
+}
+
+char* Career::get_division()
+{
+    return division_;
 }
 
 #endif

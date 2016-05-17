@@ -13,8 +13,11 @@ public:
     Subject();
 
     bool set_id(unsigned int id);
+    unsigned int get_id();
     bool set_name(char* name);
+    char* get_name();
     bool set_credits(unsigned int credits);
+    unsigned int get_credits();
 };
 
 Subject::Subject()
@@ -34,6 +37,11 @@ bool Subject::set_id(unsigned int id)
     return false;
 }
 
+unsigned int Subject::get_id()
+{
+    return id_;
+}
+
 bool Subject::set_name(char* name)
 {
     if (name[0] != '\x0')
@@ -47,6 +55,11 @@ bool Subject::set_name(char* name)
     return false;
 }
 
+char* Subject::get_name()
+{
+    return name_;
+}
+
 bool Subject::set_credits(unsigned int credits)
 {
     if (credits >= 0)
@@ -55,6 +68,11 @@ bool Subject::set_credits(unsigned int credits)
         return true;
     }
     return false;
+}
+
+unsigned int Subject::get_credits()
+{
+    return credits_;
 }
 
 #endif
