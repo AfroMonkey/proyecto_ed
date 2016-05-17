@@ -5,7 +5,10 @@ template <class T>
 class node
 {
     template <class U>
-    friend class LinkedList;
+    friend class linked_list;
+
+    template <class U>
+    friend class linked_list_iterator;
 
 public:
     node<T>(const T&);
