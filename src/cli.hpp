@@ -12,8 +12,25 @@ const std::string CLEAR = "cls";
 const std::string CLEAR = "clear";
 #endif
 
+const int kRows = 24;
+const int kCols = 80;
+
+const std::string OPTION_NOT_FOUND = " Opcion no valida.";
 const std::string PAUSE_MESSAGE = " Presiona enter...";
-const std::string PROMPT_POSITIVE_INTEGER = "Ingresa un entero positivo: ";
+const std::string PROMPT_POSITIVE_INTEGER = " Ingresa un entero positivo: ";
+
+enum menu_option
+{
+    DEGREE  = 1,
+    SUBJECT = 2,
+    EXIT    = 3,
+    ADD     = 1,
+    LIST    = 2,
+    SEARCH  = 3,
+    EDIT    = 4,
+    DELETE  = 5,
+    GO_BACK = 6
+};
 
 // Input functions ---------------------------------------------------------
 
@@ -53,11 +70,6 @@ std::string get_string()
 
 // Menus, messages and interface functions -------------------------------------
 
-void print_menu()
-{
-    // TODO
-}
-
 void clear_screen()
 {
     system(CLEAR.c_str());
@@ -67,6 +79,39 @@ void pause_program(std::string msg = PAUSE_MESSAGE)
 {
     std::cout << msg;
     std::cin.ignore();
+}
+
+void print_centered(std::string msg, char fill = ' ')
+{
+    int padding = (kCols - msg.length()) / 2;
+    for (int i = 0; i < padding; i++) std::cout << fill;
+    std::cout << msg;
+    for (int i = 0; i < padding; i++) std::cout << fill;
+    if (msg.length() % 2) std::cout << fill;
+}
+
+void display_main_menu()
+{
+    clear_screen();
+    print_centered("Malla Curricular");
+    std::cout << " 1.- Programas educativos" << std::endl;
+    std::cout << " 2.- Asignaturas         " << std::endl;
+    std::cout << " 3.- Salir               " << std::endl << std::endl;
+    std::cout << " Opcion: ";
+}
+
+void display_sec_menu(int type = DEGREE)
+{
+    clear_screen();
+    type == DEGREE ? print_centered("Programas educativos") 
+                   : print_centered("Asignaturas");
+    std::cout << " 1.- Agregar  " << std::endl;
+    std::cout << " 2.- Mostrar  " << std::endl;
+    std::cout << " 3.- Buscar   " << std::endl;
+    std::cout << " 4.- Modificar" << std::endl;
+    std::cout << " 5.- Eliminar " << std::endl;
+    std::cout << " 6.- Regresar " << std::endl << std::endl;
+    std::cout << " Opcion: ";
 }
 
 // 'Degree' specific functions -------------------------------------------------
