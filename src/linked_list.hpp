@@ -1,6 +1,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <cstddef>
+#include <utility> // std::swap
 #include "linked_list_iterator.hpp"
 
 template <typename T>
@@ -10,21 +12,25 @@ public:
     typedef linked_list_iterator<T> iterator;
 
     linked_list();
+    linked_list(linked_list& other);
     ~linked_list();
     // accessors
-    size_t   size() const;
-    bool     empty() const;
-    iterator at(long);
+    bool empty() const;
+    iterator at(long index);
     iterator begin();
     iterator end();
     iterator find(const T&);
+    std::size_t size() const;
     // modifiers
     void push_front(const T&);
     void push_back(const T&);
-    void insert(iterator, const T&);
-    void erase(iterator);
+    void insert(iterator index, const T&);
+    void erase(iterator index);
     void remove(const T&);
     void clear();
+
+    void swap(linked_list& other);
+    linked_list& operator=(linked_list other);
 
 private:
     typedef node<T> node;
@@ -33,22 +39,25 @@ private:
 
     node*  head_;
     node*  tail_;
-    size_t size_;
+    std::size_t size_;
 };
 
 template <typename T>
 linked_list<T>::linked_list() : head_(nullptr), tail_(nullptr), size_(0) {}
 
 template <typename T>
-linked_list<T>::~linked_list()
+linked_list<T>::linked_list(linked_list<T>& other)
 {
-    clear();
+    for (iterator it = other.begin(); it != other.end(); ++it)
+    {
+        push_back(*it);
+    }
 }
 
 template <typename T>
-size_t linked_list<T>::size() const
+linked_list<T>::~linked_list()
 {
-    return size_;
+    clear();
 }
 
 template <typename T>
@@ -94,6 +103,12 @@ typename linked_list<T>::iterator linked_list<T>::find(const T& value)
         if (*it == value) break;
     }
     return it;
+}
+
+template <typename T>
+std::size_t linked_list<T>::size() const
+{
+    return size_;
 }
 
 template <typename T>
@@ -226,6 +241,20 @@ template <typename T>
 void linked_list<T>::destroy_node(node* old_node)
 {
     delete old_node;
+}
+
+template <typename T>
+void linked_list<T>::swap(linked_list<T>& other)
+{
+    std::swap(head_, other.head_);
+    std::swap(tail_, other.tail_);
+}
+
+template <typename T>
+linked_list<T>& linked_list<T>::operator=(linked_list<T> other)
+{
+    swap(other);
+    return *this;
 }
 
 #endif

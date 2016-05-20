@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "linked_list.hpp"
 
 int main(int argc, char const *argv[])
@@ -36,6 +37,19 @@ int main(int argc, char const *argv[])
     {
         std::cout << *it << " ";
     }
-    std::cout << std::endl;
+    std::cout << std::endl << " List 2" << std::endl;
+    linked_list<int> list2(list);
+    for (linked_list<int>::iterator it = list.begin(); it != list.end(); ++it)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl << " List 3" << std::endl;
+    linked_list<int> list3;
+    list3 = list;
+    for (linked_list<int>::iterator it = list.begin(); it != list.end(); ++it)
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl
     return 0;
 }
