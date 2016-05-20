@@ -10,6 +10,10 @@
 void manage_degrees();
 void manage_subjects();
 
+linked_list<Subject> ls_common_part;
+linked_list<Subject> ls_degree_required;
+linked_list<Subject> ls_foreign_language;
+
 int main()
 {
     bool exit_program = false;
@@ -45,14 +49,21 @@ void manage_degrees()
         switch(get_positive_int())
         {
             case ADD:
+                // Set a degree object and added to the list
+                // Prompt degree category for selecting list to insert to
                 break;
             case LIST:
+                // Call a print list function
                 break;
             case SEARCH:
+                // Prompt id or data needed, then search in the correspondent list
+                // if there's any result, print it
                 break;
             case EDIT:
+                // Just like search, but giving the posibility of edit the data
                 break;
             case DELETE:
+                // Search, if found -> delete
                 break;
             case GO_BACK:
                 go_back = true;
