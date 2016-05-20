@@ -8,8 +8,14 @@ class Subject
 {
 public:
     Subject();
-    bool set_name(char* name);
-    
+
+    void set_id(const unsigned int& id);
+    unsigned int get_id() const;
+    bool set_name(const char* name);
+    char* get_name() const;
+    void set_credits(const unsigned int& credits);
+    unsigned int get_credits() const;
+
 private:
     unsigned int id_;
     char name_[SUBJECT_NAME_LENGTH + 1];
@@ -23,7 +29,17 @@ Subject::Subject()
     credits_ = -1;
 }
 
-bool Subject::set_name(char* name)
+void Subject::set_id(const unsigned int& id)
+{
+    id_ = id;
+}
+
+unsigned int Subject::get_id() const
+{
+    return id_;
+}
+
+bool Subject::set_name(const char* name)
 {
     if (strlen(name) <= DEGREE_NAME_LENGTH)
     {
@@ -31,6 +47,21 @@ bool Subject::set_name(char* name)
         return true;
     }
     return false;
+}
+
+char* Subject::get_name()
+{
+    return name_;
+}
+
+void Subject::set_credits(const unsigned int& credits)
+{
+    credits_ = credits;
+}
+
+unsigned int Subject::get_credits() const
+{
+    return credits_;
 }
 
 #endif

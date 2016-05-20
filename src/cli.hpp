@@ -2,61 +2,59 @@
 #define CLI_HPP
 
 #include <iostream>
-
 #include "subject.hpp"
 
-int get_int(std::string m = ">")
-{
-    int i;
+const std::string PROMPT_POSITIVE_INTEGER = "Ingresa un entero positivo: ";
 
-    std::cout << m;
-    while (!(std::cin >> i))
+int get_int(int d = -1)
+{
+    int n;
+    if (!(std::cin >> n))
     {
-        std::cout << m;
+        n = d;
         std::cin.clear();
         std::cin.ignore();
     }
     std::cin.ignore();
-
-    return i;
+    return n;
 }
 
-char* get_string(std::string m = ">")
+int get_positive_int()
 {
-    //TODO [FIX] Free memory
-    char* cs;
-    std::string s;
-
-    std::cout << m;
-
-    getline(std::cin, s);
-    cs = new char[s.length()];
-    for(int i = 0; s[i]; i++)
+    int n = get_int();
+    while (n < 0)
     {
-        cs[i] = s[i];
+        std::cout << PROMPT_POSITIVE_INTEGER;
+        n = get_int();
     }
-
-    return cs;
+    return n;
 }
 
-void fill_subject(Subject &subject)
+std::string get_string()
 {
-    char* name;
+    std::string str;
+    getline(std::cin, str);
+    return str;
+}
 
-    subject.set_id(get_int("ID>"));
+// 'Subject' specific functions
 
+void set_subject(Subject &subject)
+{
+    // Prompts user to enter the data needed for a subject
+    std::string str;
+    subject.set_id(get_positive_int());
     do
     {
-        name = get_string("Nombre>");
-    } while (!subject.set_name(name));
-    delete name;
-
-    subject.set_credits(get_int("Creditos>"));
+        str = get_string();
+    } while (!subject.set_name(str.c_str()));
+    subject.set_credits(get_positive_int());
 }
 
-void print_subject_row(Subject &subject)
+void print_subject(const Subject& subject)
 {
     //TODO [FIX] Alligment
+    // Prints data contained by subject
     std::cout << subject.get_id() << "\t";
     std::cout << subject.get_name() << "\t";
     std::cout << subject.get_credits() << "\n";
