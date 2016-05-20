@@ -8,14 +8,8 @@ class Subject
 {
 public:
     Subject();
-
-    void set_id(unsigned int id);
-    const unsigned int get_id();
     bool set_name(char* name);
-    const char* get_name();
-    void set_credits(unsigned int credits);
-    const unsigned int get_credits();
-
+    
 private:
     unsigned int id_;
     char name_[SUBJECT_NAME_LENGTH + 1];
@@ -37,31 +31,6 @@ bool Subject::set_name(char* name)
         return true;
     }
     return false;
-}
-
-const char* Subject::get_name()
-{
-    return name_;
-}
-
-void Subject::set_id(unsigned int id)
-{
-    id_ = id;
-}
-
-const unsigned int Subject::get_id()
-{
-    return id_;
-}
-
-void Subject::set_credits(unsigned int credits)
-{
-    credits_ = credits;
-}
-
-const unsigned int Subject::get_credits()
-{
-    return credits_;
 }
 
 #endif
