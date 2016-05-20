@@ -12,7 +12,7 @@ public:
     void set_id(const unsigned int& id);
     unsigned int get_id() const;
     bool set_name(const char* name);
-    char* get_name() const;
+    const char* get_name() const;
     void set_credits(const unsigned int& credits);
     unsigned int get_credits() const;
 
@@ -49,7 +49,7 @@ bool Subject::set_name(const char* name)
     return false;
 }
 
-char* Subject::get_name()
+const char* Subject::get_name() const
 {
     return name_;
 }

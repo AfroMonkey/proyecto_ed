@@ -9,8 +9,14 @@ class Degree
 {
 public:
     Degree();
-    bool set_name(char *name);
-    bool set_division(char *division);
+    void set_id(const unsigned int& id);
+    unsigned int get_id() const;
+    bool set_name(const char *name);
+    const char* get_name() const;
+    void set_credits(const unsigned int& credits);
+    unsigned int get_credits() const;
+    bool set_division(const char *division);
+    const char* get_division() const;
     bool check_credits(); //TODO
 
 private:
@@ -31,7 +37,17 @@ Degree::Degree()
     division_[0] = '\x0';
 }
 
-bool Degree::set_name(char *name)
+void Degree::set_id(const unsigned int& id)
+{
+    id_ = id;
+}
+
+unsigned int Degree::get_id() const
+{
+    return id_;
+}
+
+bool Degree::set_name(const char *name)
 {
     if (strlen(name) <= DEGREE_NAME_LENGTH)
     {
@@ -41,7 +57,22 @@ bool Degree::set_name(char *name)
     return false;
 }
 
-bool Degree::set_division(char *division)
+const char* Degree::get_name() const
+{
+    return name_;
+}
+
+void Degree::set_credits(const unsigned int& credits)
+{
+    credits_ = credits;
+}
+
+unsigned int Degree::get_credits() const
+{
+    return credits_;
+}
+
+bool Degree::set_division(const char *division)
 {
     if (strlen(division) <= DEGREE_DIVISION_LENGTH)
     {
@@ -49,6 +80,11 @@ bool Degree::set_division(char *division)
         return false;
     }
     return false;
+}
+
+const char* Degree::get_division() const
+{
+    return division_;
 }
 
 #endif
