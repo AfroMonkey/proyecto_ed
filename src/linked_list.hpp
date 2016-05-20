@@ -69,8 +69,7 @@ bool linked_list<T>::empty() const
 template <typename T>
 typename linked_list<T>::iterator linked_list<T>::at(long index)
 {
-    // TODO: add exception
-    // if (index >= size_) // throw IndexOutOfBounds
+    if (index >= size_) return;
     long l = 0;
     for (iterator it = begin(); it != end(); ++it, ++l)
     {
@@ -79,7 +78,6 @@ typename linked_list<T>::iterator linked_list<T>::at(long index)
             return it;
         }
     }
-    return iterator(); // remove this
 }
 
 template <typename T>
@@ -154,7 +152,7 @@ void linked_list<T>::push_back(const T& value)
 template <typename T>
 void linked_list<T>::insert(iterator index, const T& value)
 {
-    // if (index >= size_) // throw IndexOutOfBounds
+    if (!index.it_) return;
     for (iterator it = begin(); it != end(); ++it)
     {
         if (it == index)
@@ -177,7 +175,7 @@ void linked_list<T>::insert(iterator index, const T& value)
 template <typename T>
 void linked_list<T>::erase(iterator index)
 {
-    if (index.it_ == nullptr) return;
+    if (!index.it) return;
     if (index.it_ == head_)
     {
         head_ = index.it_->next_;
