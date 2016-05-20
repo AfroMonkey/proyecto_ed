@@ -114,6 +114,11 @@ void display_sec_menu(int type = DEGREE)
     std::cout << " Opcion: ";
 }
 
+void option_not_found()
+{
+    std::cout << OPTION_NOT_FOUND << std::endl;
+}
+
 // 'Degree' specific functions -------------------------------------------------
 
 void set_degree(Degree& degree)

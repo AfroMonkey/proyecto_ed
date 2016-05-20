@@ -29,7 +29,7 @@ int main()
                 exit_program = true;
                 break;
             default:
-                std::cout << OPTION_NOT_FOUND << std::endl;
+                option_not_found();
                 pause_program();
         }
     }
