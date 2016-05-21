@@ -54,7 +54,6 @@ linked_list<T>::linked_list(linked_list<T>& other)
     for (iterator it = other.begin(); it != other.end(); ++it)
     {
         push_back(*it);
-        break;
     }
 }
 
