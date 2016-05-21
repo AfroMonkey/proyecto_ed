@@ -18,6 +18,8 @@ const int kCols = 80;
 const std::string OPTION_NOT_FOUND = " Opcion no valida.";
 const std::string PAUSE_MESSAGE = " Presiona enter...";
 const std::string PROMPT_POSITIVE_INTEGER = " Ingresa un entero positivo: ";
+const std::string HEADER_DEGREE = "Programas educativos";
+const std::string HEADER_SUBJECT = "Asignaturas";
 
 enum menu_option
 {
@@ -100,17 +102,16 @@ void display_main_menu()
     std::cout << " Opcion: ";
 }
 
-void display_sec_menu(int type = DEGREE)
+void display_sec_menu(const std::string header)
 {
     clear_screen();
-    type == DEGREE ? print_centered("Programas educativos") 
-                   : print_centered("Asignaturas");
-    std::cout << " 1.- Agregar  " << std::endl;
-    std::cout << " 2.- Mostrar  " << std::endl;
-    std::cout << " 3.- Buscar   " << std::endl;
-    std::cout << " 4.- Modificar" << std::endl;
-    std::cout << " 5.- Eliminar " << std::endl;
-    std::cout << " 6.- Regresar " << std::endl << std::endl;
+    print_centered(header);
+    std::cout << " " << ADD      << ".- Agregar  " << std::endl;
+    std::cout << " " << LIST     << ".- Mostrar  " << std::endl;
+    std::cout << " " << SEARCH   << ".- Buscar   " << std::endl;
+    std::cout << " " << EDIT     << ".- Modificar" << std::endl;
+    std::cout << " " << DELETE   << ".- Eliminar " << std::endl;
+    std::cout << " " << GO_BACK  << ".- Regresar " << std::endl << std::endl;
     std::cout << " Opcion: ";
 }
 

@@ -45,7 +45,7 @@ void manage_degrees()
     bool go_back = false;
     while (!go_back)
     {
-        display_sec_menu(DEGREE);
+        display_sec_menu(HEADER_DEGREE);
         switch(get_positive_int())
         {
             case ADD:
@@ -80,7 +80,7 @@ void manage_subjects()
     bool go_back = false;
     while (!go_back)
     {
-        display_sec_menu(SUBJECT);
+        display_sec_menu(HEADER_SUBJECT);
         switch(get_positive_int())
         {
             case ADD:

@@ -33,7 +33,7 @@ public:
     linked_list& operator=(linked_list other);
 
 private:
-    typedef node<T> node;
+    typedef ::node<T> node;
     node* construct_node(const T&);
     void  destroy_node(node*);
 
@@ -69,7 +69,7 @@ bool linked_list<T>::empty() const
 template <typename T>
 typename linked_list<T>::iterator linked_list<T>::at(long index)
 {
-    if (index >= size_) return;
+    if (index >= size_) return iterator();
     long l = 0;
     for (iterator it = begin(); it != end(); ++it, ++l)
     {
@@ -175,7 +175,7 @@ void linked_list<T>::insert(iterator index, const T& value)
 template <typename T>
 void linked_list<T>::erase(iterator index)
 {
-    if (!index.it) return;
+    if (!index.it_) return;
     if (index.it_ == head_)
     {
         head_ = index.it_->next_;

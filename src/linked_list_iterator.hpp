@@ -9,7 +9,7 @@ class linked_list_iterator
     template <typename U>
     friend class linked_list;
 
-    typedef node<T> node;
+    typedef ::node<T> node;
 
 public:
     linked_list_iterator(node* it = nullptr);
