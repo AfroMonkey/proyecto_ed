@@ -16,7 +16,7 @@ public:
     ~linked_list();
     // accessors
     bool empty() const;
-    iterator at(long index);
+    iterator at(const size_t& index);
     iterator begin();
     iterator end();
     iterator find(const T&);
@@ -67,17 +67,16 @@ bool linked_list<T>::empty() const
 }
 
 template <typename T>
-typename linked_list<T>::iterator linked_list<T>::at(long index)
+typename linked_list<T>::iterator linked_list<T>::at(const size_t& index)
 {
     if (index >= size_) return iterator();
-    long l = 0;
-    for (iterator it = begin(); it != end(); ++it, ++l)
+    size_t l = 0;
+    iterator it;
+    for (it = begin(); it != end(); ++it, ++l)
     {
-        if (l == index)
-        {
-            return it;
-        }
+        if (l == index) break;
     }
+    return it;
 }
 
 template <typename T>

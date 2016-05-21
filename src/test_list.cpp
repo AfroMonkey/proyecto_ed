@@ -50,6 +50,6 @@ int main(int argc, char const *argv[])
     {
         std::cout << *it << " ";
     }
-    std::cout << std::endl
+    std::cout << std::endl;
     return 0;
 }
