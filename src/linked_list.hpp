@@ -48,8 +48,7 @@ linked_list<T>::linked_list() : head_(nullptr), tail_(nullptr), size_(0) {}
 template <typename T>
 linked_list<T>::linked_list(linked_list<T>& other)
 {
-    head_ = nullptr;
-    tail_ = nullptr;
+    head_ = tail_ = nullptr;
     size_ = 0;
     for (iterator it = other.begin(); it != other.end(); ++it)
     {
@@ -233,7 +232,6 @@ template <typename T>
 typename linked_list<T>::node* linked_list<T>::construct_node(const T& value)
 {
     node* new_node = new node(value);
-    // check for correct allocation or throw
     return new_node;
 }
 
