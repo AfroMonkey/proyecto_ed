@@ -49,10 +49,10 @@ unsigned int Degree::get_id() const
 
 bool Degree::set_name(const char *name)
 {
-    if (strlen(name) <= DEGREE_NAME_LENGTH)
+    if (strcmp(name, "") && strlen(name) <= DEGREE_NAME_LENGTH)
     {
         strcpy(name_, name);
-        return false;
+        return true;
     }
     return false;
 }
@@ -74,10 +74,10 @@ unsigned int Degree::get_credits() const
 
 bool Degree::set_division(const char *division)
 {
-    if (strlen(division) <= DEGREE_DIVISION_LENGTH)
+    if (strcmp(division, "") && strlen(division) <= DEGREE_DIVISION_LENGTH)
     {
         strcpy(division_, division);
-        return false;
+        return true;
     }
     return false;
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "degree.hpp"
 #include "subject.hpp"
+#include "linked_list.hpp"
 
 #ifdef _WIN32
 const std::string CLEAR = "cls";
@@ -125,14 +126,18 @@ void option_not_found()
 void set_degree(Degree& degree)
 {
     std::string str;
+    std::cout << "       ID: ";
     degree.set_id(get_positive_int());
     do
     {
+        std::cout << "   Nombre: ";
         str = get_string();
     } while (!degree.set_name(str.c_str()));
+    std::cout << " Creditos: ";
     degree.set_credits(get_positive_int());
     do
     {
+        std::cout << " Division: ";
         str = get_string();
     } while (!degree.set_division(str.c_str()));
 }

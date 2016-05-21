@@ -20,7 +20,7 @@ int main()
     while (!exit_program)
     {
         display_main_menu();
-        switch(get_positive_int()) // Quiza una funcion derivada de get_int que sea especifica para opciones (?)
+        switch(get_int())
         {
             case DEGREE:
                 manage_degrees();
@@ -45,18 +45,19 @@ void manage_degrees()
     bool go_back = false;
     while (!go_back)
     {
+        Degree degree;
         display_sec_menu(HEADER_DEGREE);
-        switch(get_positive_int())
+        switch(get_int())
         {
             case ADD:
-                // Set a degree object and added to the list
-                // Prompt degree category for selecting list to insert to
+                set_degree(degree);
+                // Set a degree object and added to the list [DONE]
                 break;
             case LIST:
-                // Call a print list function
+                
                 break;
             case SEARCH:
-                // Prompt id or data needed, then search in the correspondent list
+                // Prompt id or data needed, then search in the correspondent file
                 // if there's any result, print it
                 break;
             case EDIT:
@@ -81,7 +82,7 @@ void manage_subjects()
     while (!go_back)
     {
         display_sec_menu(HEADER_SUBJECT);
-        switch(get_positive_int())
+        switch(get_int())
         {
             case ADD:
                 break;

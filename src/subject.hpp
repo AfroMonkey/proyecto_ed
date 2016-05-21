@@ -41,7 +41,7 @@ unsigned int Subject::get_id() const
 
 bool Subject::set_name(const char* name)
 {
-    if (strlen(name) <= DEGREE_NAME_LENGTH)
+    if (strcmp(name, "") && strlen(name) <= DEGREE_NAME_LENGTH)
     {
         strcpy(name_, name);
         return true;
