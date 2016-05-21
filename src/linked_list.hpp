@@ -48,9 +48,13 @@ linked_list<T>::linked_list() : head_(nullptr), tail_(nullptr), size_(0) {}
 template <typename T>
 linked_list<T>::linked_list(linked_list<T>& other)
 {
+    head_ = nullptr;
+    tail_ = nullptr;
+    size_ = 0;
     for (iterator it = other.begin(); it != other.end(); ++it)
     {
         push_back(*it);
+        break;
     }
 }
 
@@ -208,13 +212,12 @@ void linked_list<T>::erase(iterator index)
 template <typename T>
 void linked_list<T>::remove(const T& value)
 {
-    for (iterator it = begin(); it != end(); ++it)
+    iterator it;
+    for (it = begin(); it != end(); ++it)
     {
-        if (*it == value)
-        {
-            erase(it);
-        }
+        if (*it == value) break;
     }
+    erase(it);
 }
 
 template <typename T>
