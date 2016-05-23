@@ -9,5 +9,6 @@ const unsigned int SUBJECT_NAME_LENGTH = 30;
 
 const std::string DEGREES_FILE = "degrees.dat";
 const std::string SUBJECTS_FILE = "subjects.dat";
+const std::string TEMPORAL_FILE = "temporal.dat";
 
 #endif

@@ -2,6 +2,7 @@
 #define CLI_HPP
 
 #include <cstdlib>
+#include <iomanip>
 #include <iostream>
 #include "degree.hpp"
 #include "subject.hpp"
@@ -13,10 +14,12 @@ const std::string CLEAR = "cls";
 const std::string CLEAR = "clear";
 #endif
 
-const int kRows = 24;
 const int kCols = 80;
+const std::string ver_s = "|";
+const std::string hor_s = "-";
 
 const std::string OPTION_NOT_FOUND = " Opcion no valida.";
+const std::string RECORD_NOT_FOUND = " No se encontro ningun registro con esa informacion.";
 const std::string PAUSE_MESSAGE = " Presiona enter...";
 const std::string PROMPT_POSITIVE_INTEGER = " Ingresa un entero positivo: ";
 const std::string HEADER_DEGREE = "Programas educativos";
@@ -116,6 +119,17 @@ void display_sec_menu(const std::string header)
     std::cout << " Opcion: ";
 }
 
+int prompt_id()
+{
+    std::cout << " Ingresa el ID: ";
+    return get_positive_int();
+} 
+
+void record_not_found()
+{
+    std::cout << RECORD_NOT_FOUND << std::endl;
+}
+
 void option_not_found()
 {
     std::cout << OPTION_NOT_FOUND << std::endl;
@@ -123,9 +137,14 @@ void option_not_found()
 
 // 'Degree' specific functions -------------------------------------------------
 
-void set_degree(Degree& degree)
+void set_degree(Degree& degree, bool edit = false)
 {
     std::string str;
+    if (edit)
+    {
+        std::cout << std::endl;
+        std::cout << " Ingresa los nuevos datos: " << std::endl;
+    }
     std::cout << "       ID: ";
     degree.set_id(get_positive_int());
     do
@@ -140,6 +159,32 @@ void set_degree(Degree& degree)
         std::cout << " Division: ";
         str = get_string();
     } while (!degree.set_division(str.c_str()));
+}
+
+void print_degree_header(bool title = false)
+{
+    if (title)
+    {
+        for (int i = 0; i < kCols; ++i) std::cout << hor_s;
+        print_centered(HEADER_DEGREE);
+    }
+    for (int i = 0; i < kCols; ++i) std::cout << hor_s;
+    std::cout << std::setw(5)  << std::left << (ver_s + " ID");
+    std::cout << std::setw(32) << std::left << (ver_s + " Nombre");
+    std::cout << std::setw(8)  << std::left << (ver_s + " Cred");
+    std::cout << std::setw(34) << std::left << (ver_s + " Division");
+    std::cout << ver_s << std::endl;
+    for (int i = 0; i < kCols; ++i) std::cout << hor_s;
+}
+
+void print_degree(const Degree& degree)
+{
+    std::string s = ver_s + " ";
+    std::cout << std::setw(5)  << std::left << (s + std::to_string(degree.get_id()));
+    std::cout << std::setw(32) << std::left << (s + degree.get_name());
+    std::cout << std::setw(8)  << std::left << (s + std::to_string(degree.get_credits()));
+    std::cout << std::setw(34) << std::left << (s + degree.get_division());
+    std::cout << ver_s << std::endl;
 }
 
 // 'Subject' specific functions ------------------------------------------------
