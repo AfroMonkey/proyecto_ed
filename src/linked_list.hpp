@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <fstream>
 #include <cstddef>
 #include <utility> // std::swap
 #include "linked_list_iterator.hpp"
@@ -28,6 +29,9 @@ public:
     void erase(iterator index);
     void remove(const T&);
     void clear();
+
+    void write(std::ofstream out);
+    void read(std::ifstream in);
 
     void swap(linked_list& other);
     linked_list& operator=(linked_list other);
@@ -228,16 +232,23 @@ void linked_list<T>::clear()
 }
 
 template <typename T>
-typename linked_list<T>::node* linked_list<T>::construct_node(const T& value)
+void linked_list<T>::write(std::ofstream out)
 {
-    node* new_node = new node(value);
-    return new_node;
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        out.write((char*) &(*it), sizeof(T));
+    }
 }
 
 template <typename T>
-void linked_list<T>::destroy_node(node* old_node)
+void linked_list<T>::read(std::ifstream in)
 {
-    delete old_node;
+    T t;
+    while(in.get() != EOF)
+    {
+        in.read((char*) &t, sizeof(T));
+        push_back(t);
+    }
 }
 
 template <typename T>
@@ -252,6 +263,19 @@ linked_list<T>& linked_list<T>::operator=(linked_list<T> other)
 {
     swap(other);
     return *this;
+}
+
+template <typename T>
+typename linked_list<T>::node* linked_list<T>::construct_node(const T& value)
+{
+    node* new_node = new node(value);
+    return new_node;
+}
+
+template <typename T>
+void linked_list<T>::destroy_node(node* old_node)
+{
+    delete old_node;
 }
 
 #endif
