@@ -30,9 +30,22 @@ Subject search_subject();
 void edit_subject();
 void delete_subject();
 
+void add_subject_to_degree();
+void list_all_subjects();
+void list_by_category();
+void list_by_degree();
 
 int main()
 {
+    std::ifstream input_degrees(DEGREES_FILE);
+    std::ifstream input_subjects(SUBJECTS_FILE);
+    std::ifstream input_relations(RELATIONS_FILE);
+    degrees.read(input_degrees);
+    subjects.read(input_subjects);
+    relations.read(input_relations);
+    input_degrees.close();
+    input_subjects.close();
+    input_relations.close();
     bool exit_program = false;
     while (!exit_program)
     {
@@ -54,6 +67,15 @@ int main()
                 pause_program();
         }
     }
+    std::ofstream output_degrees(DEGREES_FILE, std::ios::trunc);
+    std::ofstream output_subjects(SUBJECTS_FILE, std::ios::trunc);
+    std::ofstream output_relations(RELATIONS_FILE, std::ios::trunc);
+    degrees.write(output_degrees);
+    subjects.write(output_subjects);
+    relations.write(output_relations);
+    output_degrees.close();
+    output_subjects.close();
+    output_relations.close();
     return 0;
 }
 
@@ -84,7 +106,7 @@ void manage_degrees()
                 go_back = true;
                 break;
             case ADD_SUBJECT:
-                //add_subject_to_degree(); TODO
+                add_subject_to_degree();
                 break;
             default:
                 std::cout << OPTION_NOT_FOUND << std::endl;
@@ -181,6 +203,13 @@ void delete_degree()
     Degree degree;
     degree = search_degree();
     if (degree.get_id() == (unsigned)-1) return;
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_degree_id() == degree.get_id())
+        {
+            relations.remove(*it);
+        }
+    }
     degrees.remove(degree);
 }
 
@@ -199,6 +228,34 @@ void add_subject()
 
 void list_subjects()
 {
+    bool go_back = false;
+    while (!go_back)
+    {
+        display_reports_menu();
+        switch(get_int())
+        {
+            case ALL:
+                list_all_subjects();
+                break;
+            case BY_CATEGORY:
+                list_by_category();
+                break;
+            case BY_DEGREE:
+                list_by_degree();
+                break;
+            case GO_BACK:
+                go_back = true;
+                break;
+            default:
+                std::cout << OPTION_NOT_FOUND << std::endl;
+                pause_program();
+        }
+        if (!go_back) pause_program();
+    }
+}
+
+void list_all_subjects()
+{
     Subject subject;
     clear_screen();
     print_subject_header(true);
@@ -208,6 +265,42 @@ void list_subjects()
     }
     std::cout << std::endl;
 }
+
+void list_by_category()
+{
+    std::cout << "Ingrese la categoria (b/e/l):";
+    char type = get_char();
+
+    if (type != 'b' || type != 'e' || type != 'l') return;
+
+    Subject subject;
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_type() == type)
+        {
+            subject.set_id(it->get_subject_id());
+            print_subject((Subject)*subjects.find(subject));
+        }
+    }
+}
+
+void list_by_degree()
+{
+    //TODO sort list
+    Degree degree;
+    Subject subject;
+    degree.set_id(prompt_id());
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_degree_id() == degree.get_id())
+        {
+            subject.set_id(it->get_subject_id());
+            print_subject((Subject)*subjects.find(subject));
+        }
+    }
+    std::cout << std::endl;
+}
+
 
 Subject search_subject()
 {
@@ -238,5 +331,47 @@ void delete_subject()
     Subject subject;
     subject = search_subject();
     if (subject.get_id() == (unsigned)-1) return;
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_subject_id() == subject.get_id())
+        {
+            relations.remove(*it);
+        }
+    }
     subjects.remove(subject);
+}
+
+void add_subject_to_degree()
+{
+    Relation relation;
+    Degree degree;
+    Subject subject;
+
+    std::cout << "ID del programa educativo: "; //TODO change to cli
+    relation.set_degree_id(get_positive_int());
+    degree.set_id(relation.get_degree_id());
+    if (degrees.find(degree) == nullptr)
+    {
+        std::cout << "No existe ese programa" << "\n";
+        return;
+    }
+
+    std::cout << "ID de la materia: "; //TODO change to cli
+    relation.set_subject_id(get_positive_int());
+    subject.set_id(relation.get_subject_id());
+    if (subjects.find(subject) == nullptr)
+    {
+        std::cout << "No existe esa materia" << "\n";
+        return;
+    }
+
+    if (relations.find(relation) != nullptr)
+    {
+        std::cout << "Esa relacion ya existe" << "\n";
+        return;
+    }
+
+    std::cout << "Tipo de materia (b/e/l): "; //TODO change to cli
+    while (!relation.set_type(get_char()));
+    relations.push_front(relation);
 }

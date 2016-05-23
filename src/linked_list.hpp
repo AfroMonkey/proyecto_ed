@@ -30,8 +30,8 @@ public:
     void remove(const T&);
     void clear();
 
-    void write(std::ofstream out);
-    void read(std::ifstream in);
+    void write(std::ofstream& out);
+    void read(std::ifstream& in);
 
     void swap(linked_list& other);
     linked_list& operator=(linked_list other);
@@ -232,7 +232,7 @@ void linked_list<T>::clear()
 }
 
 template <typename T>
-void linked_list<T>::write(std::ofstream out)
+void linked_list<T>::write(std::ofstream& out)
 {
     for (iterator it = begin(); it != end(); ++it)
     {
@@ -241,7 +241,7 @@ void linked_list<T>::write(std::ofstream out)
 }
 
 template <typename T>
-void linked_list<T>::read(std::ifstream in)
+void linked_list<T>::read(std::ifstream& in)
 {
     T t;
     while(in.get() != EOF)

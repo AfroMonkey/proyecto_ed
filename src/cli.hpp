@@ -26,6 +26,7 @@ const std::string PROMPT_POSITIVE_INTEGER = " Ingresa un entero positivo: ";
 const std::string HEADER_DEGREE = "Programas educativos";
 const std::string HEADER_SUBJECT = "Asignaturas";
 const std::string HEADER_RELATION = "Relacion de materias";
+const std::string HEADER_REPORTS = "Reportes de materias";
 
 enum menu_option
 {
@@ -38,7 +39,10 @@ enum menu_option
     EDIT    = 4,
     DELETE  = 5,
     GO_BACK = 6,
-    ADD_SUBJECT = 7
+    ADD_SUBJECT = 7,
+    ALL = 1,
+    BY_CATEGORY = 2,
+    BY_DEGREE = 3
 };
 
 // Input functions ---------------------------------------------------------
@@ -134,6 +138,18 @@ void display_sec_menu(const std::string header)
     {
         std::cout << " " << ADD_SUBJECT  << ".- Agregar materia " << std::endl;
     }
+    std::cout << std::endl;
+    std::cout << " Opcion: ";
+}
+
+void display_reports_menu()
+{
+    clear_screen();
+    print_centered(HEADER_REPORTS);
+    std::cout << " " << ALL      << ".- Todas  " << std::endl;
+    std::cout << " " << BY_CATEGORY     << ".- Categoria  " << std::endl;
+    std::cout << " " << BY_DEGREE   << ".- Programa educativo   " << std::endl;
+    std::cout << " " << GO_BACK  << ".- Regresar " << std::endl;
     std::cout << std::endl;
     std::cout << " Opcion: ";
 }

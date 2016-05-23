@@ -2,6 +2,7 @@
 #define RELATION_HPP
 
 #include <fstream>
+#include "config.hpp"
 
 class Relation
 {
@@ -18,7 +19,7 @@ public:
     unsigned int get_degree_id() const;
     void set_subject_id(unsigned int subject_id);
     unsigned int get_subject_id() const;
-    void set_type(char type);
+    bool set_type(char type);
     char get_type() const;
 
     void write(std::ofstream& in);
@@ -60,9 +61,11 @@ unsigned int Relation::get_subject_id() const
     return subject_id_;
 }
 
-void Relation::set_type(char type)
+bool Relation::set_type(char type)
 {
+    if (type != 'b' || type != 'e' || type != 'l') return false;
     type_ = type;
+    return true;
 }
 
 char Relation::get_type() const
