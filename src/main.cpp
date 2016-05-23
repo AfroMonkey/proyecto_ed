@@ -154,12 +154,12 @@ void add_degree()
 {
     Degree degree;
     set_degree(degree);
-    if (degrees.find(degree) != nullptr)
+    if (degrees.find(degree) != degrees.end())
     {
         std::cout << "Ese programa ya existe" << "\n"; //TODO change to cli
         return;
     }
-    degrees.push_front(degree);
+    degrees.push_back(degree);
 }
 
 void list_degrees()
@@ -178,7 +178,7 @@ Degree search_degree()
 {
     Degree degree;
     degree.set_id(prompt_id());
-    if (degrees.find(degree) == nullptr)
+    if (degrees.find(degree) == degrees.end())
     {
         std::cout << "Ese programa no existe" << "\n"; //TODO change to cli
         Degree empty;
@@ -218,12 +218,12 @@ void add_subject()
 {
     Subject subject;
     set_subject(subject);
-    if (subjects.find(subject) != nullptr)
+    if (subjects.find(subject) != subjects.end())
     {
         std::cout << "Esa materia ya existe" << "\n"; //TODO change to cli
         return;
     }
-    subjects.push_front(subject);
+    subjects.push_back(subject);
 }
 
 void list_subjects()
@@ -306,7 +306,7 @@ Subject search_subject()
 {
     Subject subject;
     subject.set_id(prompt_id());
-    if (subjects.find(subject) == nullptr)
+    if (subjects.find(subject) == subjects.end())
     {
         std::cout << "Esa materia no existe" << "\n"; //TODO change to cli
         Subject empty;
@@ -350,7 +350,7 @@ void add_subject_to_degree()
     std::cout << "ID del programa educativo: "; //TODO change to cli
     relation.set_degree_id(get_positive_int());
     degree.set_id(relation.get_degree_id());
-    if (degrees.find(degree) == nullptr)
+    if (degrees.find(degree) == degrees.end())
     {
         std::cout << "No existe ese programa" << "\n";
         return;
@@ -359,13 +359,13 @@ void add_subject_to_degree()
     std::cout << "ID de la materia: "; //TODO change to cli
     relation.set_subject_id(get_positive_int());
     subject.set_id(relation.get_subject_id());
-    if (subjects.find(subject) == nullptr)
+    if (subjects.find(subject) == subjects.end())
     {
         std::cout << "No existe esa materia" << "\n";
         return;
     }
 
-    if (relations.find(relation) != nullptr)
+    if (relations.find(relation) != relations.end())
     {
         std::cout << "Esa relacion ya existe" << "\n";
         return;
@@ -373,5 +373,5 @@ void add_subject_to_degree()
 
     std::cout << "Tipo de materia (b/e/l): "; //TODO change to cli
     while (!relation.set_type(get_char()));
-    relations.push_front(relation);
+    relations.push_back(relation);
 }

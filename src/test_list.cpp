@@ -1,3 +1,4 @@
+#include <fstream>
 #include <iostream>
 #include <algorithm>
 #include "linked_list.hpp"
@@ -51,5 +52,21 @@ int main(int argc, char const *argv[])
         std::cout << *it << " ";
     }
     std::cout << std::endl;
+    std::ifstream in;
+    std::ofstream out;
+
+    out.open("test.txt", std::ios::trunc);
+    list3.write(out);
+    out.close();
+
+    linked_list<int> list4;
+    in.open("text.txt");
+    list4.read(in);
+    in.close();
+    std::cout << " List 4" << std::endl;
+    for (linked_list<int>::iterator it = list.begin(); it != list.end(); ++it)
+    {
+        std::cout << *it << " ";
+    }
     return 0;
 }
