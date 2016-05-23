@@ -22,8 +22,8 @@ public:
     bool check_credits(); //TODO
     void read(std::ifstream& in);
     void write(std::ofstream& out);
-
-    linked_list< std::pair<unsigned int, char> > subjects_;
+    bool operator==(const Degree& other);
+    //linked_list< std::pair<unsigned int, char> > subjects_;
 private:
     unsigned int id_;
     char name_[DEGREE_NAME_LENGTH + 1];
@@ -97,6 +97,11 @@ void Degree::read(std::ifstream& in)
 void Degree::write(std::ofstream& in)
 {
     in.write((char*) this, sizeof(Degree));
+}
+
+bool Degree::operator==(const Degree& other)
+{
+    return id_ == other.id_;
 }
 
 #endif

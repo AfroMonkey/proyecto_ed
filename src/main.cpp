@@ -12,7 +12,13 @@
 void manage_degrees();
 void manage_subjects();
 
-int search_degree(int id);
+void add_degree();
+void list_degrees();
+Degree search_degree();
+void edit_degree();
+void delete_degree();
+int find_degree(int id);
+int get_degree_address(Degree degree);
 
 linked_list<Subject> ls_common_part;
 linked_list<Subject> ls_degree_required;
@@ -46,87 +52,26 @@ int main()
 
 void manage_degrees()
 {
-    int p;
     bool go_back = false;
     while (!go_back)
     {
-        Degree degree;
-        std::ifstream in;
-        std::ofstream out;
         display_sec_menu(HEADER_DEGREE);
         switch(get_int())
         {
             case ADD:
-                set_degree(degree);
-                out.open(DEGREES_FILE, std::ios::app);
-                degree.write(out);
-                out.close();
+                add_degree();
                 break;
             case LIST:
-                in.open(DEGREES_FILE);
-                clear_screen();
-                print_degree_header(true);
-                while(in.get() != EOF)
-                {
-                    in.seekg(-1, std::ios::cur);
-                    degree.read(in);
-                    print_degree(degree);
-                }
-                in.close();
+                list_degrees();
                 break;
             case SEARCH:
-                p = search_degree(prompt_id());
-                if (p == -1)
-                {
-                    record_not_found();
-                    break;
-                }
-                in.open(DEGREES_FILE);
-                in.seekg(p, std::ios::beg);
-                degree.read(in);
-                in.close();
-                print_degree_header();
-                print_degree(degree);
+                search_degree();
                 break;
             case EDIT:
-                p = search_degree(prompt_id());
-                if (p == -1)
-                {
-                    record_not_found();
-                    break;
-                }
-                in.open(DEGREES_FILE);
-                in.seekg(p, std::ios::beg);
-                degree.read(in);
-                in.close();
-                print_degree_header();
-                print_degree(degree);
-                set_degree(degree, true);
-                out.open(DEGREES_FILE, std::ios::out | std::ios::in);
-                out.seekp(p, std::ios::beg);
-                degree.write(out);
-                out.close();
+                edit_degree();
                 break;
             case DELETE:
-                p = search_degree(prompt_id());
-                if (p == -1)
-                {
-                    record_not_found();
-                    break;
-                }
-                in.open(DEGREES_FILE);
-                out.open(TEMPORAL_FILE, std::ios::out);
-                while(in.get() != EOF)
-                {
-                    in.seekg(-1, std::ios::cur);
-                    if (in.tellg() == p) in.seekg(sizeof(Degree), std::ios::cur);
-                    degree.read(in);
-                    degree.write(out);
-                }
-                in.close();
-                out.close();
-                std::remove(DEGREES_FILE.c_str());
-                std::rename(TEMPORAL_FILE.c_str(), DEGREES_FILE.c_str());
+                delete_degree();
                 break;
             case GO_BACK:
                 go_back = true;
@@ -168,7 +113,92 @@ void manage_subjects()
     }
 }
 
-int search_degree(int id)
+void add_degree()
+{
+    Degree degree;
+    std::ofstream out;
+    set_degree(degree);
+    out.open(DEGREES_FILE, std::ios::app);
+    degree.write(out);
+    out.close();
+}
+
+void list_degrees()
+{
+    Degree degree;
+    std::ifstream in;
+    in.open(DEGREES_FILE);
+    clear_screen();
+    print_degree_header(true);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        degree.read(in);
+        print_degree(degree);
+    }
+    in.close();
+    std::cout << std::endl;
+}
+
+Degree search_degree()
+{
+    Degree degree, empty;
+    std::ifstream in;
+    int p = find_degree(prompt_id());
+    if (p == -1)
+    {
+        record_not_found();
+        return empty;
+    }
+    in.open(DEGREES_FILE);
+    in.seekg(p, std::ios::beg);
+    degree.read(in);
+    in.close();
+    std::cout << std::endl;
+    print_degree_header();
+    print_degree(degree);
+    std::cout << std::endl;
+    return degree;
+}
+
+void edit_degree()
+{
+    int p;
+    Degree degree;
+    std::ofstream out;
+    degree = search_degree();
+    if (degree.get_id() == -1) return;
+    p = find_degree(degree.get_id());
+    set_degree(degree, true);
+    out.open(DEGREES_FILE, std::ios::out | std::ios::in);
+    out.seekp(p, std::ios::beg);
+    degree.write(out);
+    out.close();
+}
+
+void delete_degree()
+{
+    Degree degree, holder;
+    std::ifstream in;
+    std::ofstream out;
+    degree = search_degree();
+    if (degree.get_id() == -1) return;
+    in.open(DEGREES_FILE);
+    out.open(TEMPORAL_FILE, std::ios::out);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        holder.read(in);
+        if (holder == degree) continue;
+        holder.write(out);
+    }
+    in.close();
+    out.close();
+    std::remove(DEGREES_FILE.c_str());
+    std::rename(TEMPORAL_FILE.c_str(), DEGREES_FILE.c_str());
+}
+
+int find_degree(int id)
 {
     Degree degree;
     std::ifstream in;
@@ -183,5 +213,6 @@ int search_degree(int id)
             return p;
         }
     }
+    in.close();
     return -1;
 }

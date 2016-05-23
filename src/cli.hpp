@@ -142,7 +142,6 @@ void set_degree(Degree& degree, bool edit = false)
     std::string str;
     if (edit)
     {
-        std::cout << std::endl;
         std::cout << " Ingresa los nuevos datos: " << std::endl;
     }
     std::cout << "       ID: ";
@@ -165,25 +164,31 @@ void print_degree_header(bool title = false)
 {
     if (title)
     {
-        for (int i = 0; i < kCols; ++i) std::cout << hor_s;
+        std::cout << " ";
+        for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+        std::cout << std::endl;
         print_centered(HEADER_DEGREE);
     }
-    for (int i = 0; i < kCols; ++i) std::cout << hor_s;
-    std::cout << std::setw(5)  << std::left << (ver_s + " ID");
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
+    std::cout << std::setw(5)  << std::left << (" " + ver_s + " ID");
     std::cout << std::setw(32) << std::left << (ver_s + " Nombre");
     std::cout << std::setw(8)  << std::left << (ver_s + " Cred");
-    std::cout << std::setw(34) << std::left << (ver_s + " Division");
+    std::cout << std::setw(33) << std::left << (ver_s + " Division");
     std::cout << ver_s << std::endl;
-    for (int i = 0; i < kCols; ++i) std::cout << hor_s;
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
 }
 
 void print_degree(const Degree& degree)
 {
     std::string s = ver_s + " ";
-    std::cout << std::setw(5)  << std::left << (s + std::to_string(degree.get_id()));
+    std::cout << std::setw(5)  << std::left << (" " + s + std::to_string(degree.get_id()));
     std::cout << std::setw(32) << std::left << (s + degree.get_name());
     std::cout << std::setw(8)  << std::left << (s + std::to_string(degree.get_credits()));
-    std::cout << std::setw(34) << std::left << (s + degree.get_division());
+    std::cout << std::setw(33) << std::left << (s + degree.get_division());
     std::cout << ver_s << std::endl;
 }
 
