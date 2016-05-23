@@ -52,7 +52,6 @@ void manage_degrees()
         display_sec_menu(HEADER_DEGREE);
         switch(get_int())
         {
-
             case ADD:
                 set_degree(degree);
                 out.open(DEGREES_FILE, std::ios::app);
