@@ -1,4 +1,5 @@
 
+#include <fstream>
 #include <iostream>
 
 #include "cli.hpp"
@@ -46,15 +47,26 @@ void manage_degrees()
     while (!go_back)
     {
         Degree degree;
+        std::ifstream in;
+        std::ofstream out;
         display_sec_menu(HEADER_DEGREE);
         switch(get_int())
         {
             case ADD:
                 set_degree(degree);
-                // Set a degree object and added to the list [DONE]
+                out.open(DEGREES_FILE, std::ios::app);
+                degree.write(out);
+                out.close();
                 break;
             case LIST:
-                
+                in.open(DEGREES_FILE);
+                while(in.get() != EOF)
+                {
+                    in.seekg(-1, std::ios::cur);
+                    degree.read(in);
+                    std::cout << degree.get_name(); // Change to print_degree(degree)
+                }
+                in.close();
                 break;
             case SEARCH:
                 // Prompt id or data needed, then search in the correspondent file

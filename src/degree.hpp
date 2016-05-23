@@ -1,6 +1,7 @@
 #ifndef DEGREE_HPP
 #define DEGREE_HPP
 
+#include <fstream>
 #include <cstring>
 #include "config.hpp"
 #include "subject.hpp"
@@ -19,6 +20,8 @@ public:
     bool set_division(const char *division);
     const char* get_division() const;
     bool check_credits(); //TODO
+    void read(std::ifstream& in);
+    void write(std::ofstream& out);
 
     linked_list< std::pair<unsigned int, char> > subjects_;
 private:
@@ -84,6 +87,16 @@ bool Degree::set_division(const char *division)
 const char* Degree::get_division() const
 {
     return division_;
+}
+
+void Degree::read(std::ifstream& in)
+{
+    in.read((char*) this, sizeof(Degree));
+}
+
+void Degree::write(std::ofstream& in)
+{
+    in.write((char*) this, sizeof(Degree));
 }
 
 #endif
