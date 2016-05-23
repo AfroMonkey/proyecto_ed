@@ -26,6 +26,7 @@ public:
     void push_front(const T&);
     void push_back(const T&);
     void insert(iterator index, const T&);
+    void insert_ordered(const T&);
     void erase(iterator index);
     void remove(const T&);
     void clear();
@@ -180,6 +181,25 @@ void linked_list<T>::insert(iterator index, const T& value)
 }
 
 template <typename T>
+void linked_list<T>::insert_ordered(const T& value)
+{
+    if (empty()) push_back(value);
+    else
+    {
+        bool inserted = false;
+        for (iterator it = begin(); it != end(); ++it)
+        {
+            if (value < *it)
+            {
+                insert(it, value);
+                inserted = true;
+            }
+        }
+        if (!inserted) push_back(value);
+    }
+}
+
+template <typename T>
 void linked_list<T>::erase(iterator index)
 {
     if (!index.it_) return;
@@ -259,14 +279,12 @@ void linked_list<T>::read(std::ifstream& in)
 template <typename T>
 void linked_list<T>::sort()
 {
-    if (empty()) return;
-    // for (iterator i = begin().it_->next_; i != end(); ++i)
-    // {
-    //     for (iterator j = begin().it_->next_; j != end(); ++j)
-    //     {
-
-    //     }
-    // }
+    linked_list<T> temp;
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        temp.insert_ordered(*it);
+    }
+    swap(temp);
 }
 
 template <typename T>
