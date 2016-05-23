@@ -33,6 +33,8 @@ public:
     void write(std::ofstream& out);
     void read(std::ifstream& in);
 
+    void sort();
+
     void swap(linked_list& other);
     linked_list& operator=(linked_list other);
 
@@ -234,9 +236,11 @@ void linked_list<T>::clear()
 template <typename T>
 void linked_list<T>::write(std::ofstream& out)
 {
+    T t;
     for (iterator it = begin(); it != end(); ++it)
     {
-        out.write((char*) &(*it), sizeof(T));
+        t = *it;
+        out.write((char*) &t, sizeof(T));
     }
 }
 
@@ -246,9 +250,23 @@ void linked_list<T>::read(std::ifstream& in)
     T t;
     while(in.get() != EOF)
     {
+        in.seekg(-1, std::ios::cur);
         in.read((char*) &t, sizeof(T));
         push_back(t);
     }
+}
+
+template <typename T>
+void linked_list<T>::sort()
+{
+    if (empty()) return;
+    // for (iterator i = begin().it_->next_; i != end(); ++i)
+    // {
+    //     for (iterator j = begin().it_->next_; j != end(); ++j)
+    //     {
+
+    //     }
+    // }
 }
 
 template <typename T>
