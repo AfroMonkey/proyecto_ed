@@ -5,6 +5,7 @@
 #include <cstring>
 #include "config.hpp"
 #include "subject.hpp"
+#include "linked_list.hpp"
 
 class Degree
 {
@@ -22,14 +23,12 @@ public:
     void read(std::ifstream& in);
     void write(std::ofstream& out);
 
+    linked_list< std::pair<unsigned int, char> > subjects_;
 private:
     unsigned int id_;
     char name_[DEGREE_NAME_LENGTH + 1];
     unsigned int credits_;
     char division_[DEGREE_DIVISION_LENGTH + 1];
-    //list<Subject*> basic_subjects_; TODO
-    //list<Subject*> language_subjects_; TODO
-    //list<Subject*> specialized_subjects_; TODO
 };
 
 Degree::Degree()
