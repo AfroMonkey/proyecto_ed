@@ -32,7 +32,8 @@ enum menu_option
 {
     DEGREE  = 1,
     SUBJECT = 2,
-    EXIT    = 3,
+    REPORTS = 3,
+    EXIT    = 4,
     ADD     = 1,
     LIST    = 2,
     SEARCH  = 3,
@@ -40,9 +41,8 @@ enum menu_option
     DELETE  = 5,
     GO_BACK = 6,
     ADD_SUBJECT = 7,
-    ALL = 1,
-    BY_CATEGORY = 2,
-    BY_DEGREE = 3
+    BY_CATEGORY = 1,
+    BY_DEGREE = 2
 };
 
 // Input functions ---------------------------------------------------------
@@ -120,7 +120,8 @@ void display_main_menu()
     print_centered("Malla Curricular");
     std::cout << " 1.- Programas educativos" << std::endl;
     std::cout << " 2.- Asignaturas         " << std::endl;
-    std::cout << " 3.- Salir               " << std::endl << std::endl;
+    std::cout << " 3.- Reportes         " << std::endl;
+    std::cout << " 4.- Salir               " << std::endl << std::endl;
     std::cout << " Opcion: ";
 }
 
@@ -134,10 +135,6 @@ void display_sec_menu(const std::string header)
     std::cout << " " << EDIT     << ".- Modificar" << std::endl;
     std::cout << " " << DELETE   << ".- Eliminar " << std::endl;
     std::cout << " " << GO_BACK  << ".- Regresar " << std::endl;
-    if (header == HEADER_DEGREE)
-    {
-        std::cout << " " << ADD_SUBJECT  << ".- Agregar materia " << std::endl;
-    }
     std::cout << std::endl;
     std::cout << " Opcion: ";
 }
@@ -146,7 +143,6 @@ void display_reports_menu()
 {
     clear_screen();
     print_centered(HEADER_REPORTS);
-    std::cout << " " << ALL      << ".- Todas  " << std::endl;
     std::cout << " " << BY_CATEGORY     << ".- Categoria  " << std::endl;
     std::cout << " " << BY_DEGREE   << ".- Programa educativo   " << std::endl;
     std::cout << " " << GO_BACK  << ".- Regresar " << std::endl;

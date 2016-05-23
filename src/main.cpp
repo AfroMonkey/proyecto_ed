@@ -16,6 +16,7 @@ linked_list<Relation> relations;
 
 void manage_degrees();
 void manage_subjects();
+void manage_reports();
 
 void add_degree();
 void list_degrees();
@@ -57,6 +58,9 @@ int main()
                 break;
             case SUBJECT:
                 manage_subjects();
+                break;
+            case REPORTS:
+                manage_reports();
                 break;
             case EXIT:
                 clear_screen();
@@ -195,7 +199,18 @@ void edit_degree()
 {
     Degree degree = search_degree();
     if (degree.get_id() == (unsigned)-1) return;
+    unsigned int old_id = degree.get_id();
     set_degree(degree, true);
+    degrees.remove(degree);
+    degrees.push_front(degree);
+
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_degree_id() == old_id)
+        {
+            it->set_degree_id(degree.get_id());
+        }
+    }
 }
 
 void delete_degree()
@@ -226,7 +241,7 @@ void add_subject()
     subjects.push_back(subject);
 }
 
-void list_subjects()
+void manage_reports()
 {
     bool go_back = false;
     while (!go_back)
@@ -234,9 +249,6 @@ void list_subjects()
         display_reports_menu();
         switch(get_int())
         {
-            case ALL:
-                list_all_subjects();
-                break;
             case BY_CATEGORY:
                 list_by_category();
                 break;
@@ -254,7 +266,7 @@ void list_subjects()
     }
 }
 
-void list_all_subjects()
+void list_subjects()
 {
     Subject subject;
     clear_screen();
@@ -323,7 +335,18 @@ void edit_subject()
 {
     Subject subject = search_subject();
     if (subject.get_id() == (unsigned)-1) return;
+    unsigned int old_id = subject.get_id();
     set_subject(subject, true);
+    subjects.remove(subject);
+    subjects.push_front(subject);
+
+    for (auto it = relations.begin(); it != relations.end(); it++)
+    {
+        if (it->get_subject_id() == old_id)
+        {
+            it->set_subject_id(subject.get_id());
+        }
+    }
 }
 
 void delete_subject()
