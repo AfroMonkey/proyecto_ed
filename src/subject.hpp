@@ -2,6 +2,7 @@
 #define SUBJETC_HPP
 
 #include <cstring>
+#include <fstream>
 #include "config.hpp"
 
 class Subject
@@ -15,6 +16,9 @@ public:
     const char* get_name() const;
     void set_credits(const unsigned int& credits);
     unsigned int get_credits() const;
+    void write(std::ofstream& in);
+    void read(std::ifstream& in);
+    bool operator==(const Subject& other);
 
 private:
     unsigned int id_;
@@ -62,6 +66,21 @@ void Subject::set_credits(const unsigned int& credits)
 unsigned int Subject::get_credits() const
 {
     return credits_;
+}
+
+void Subject::read(std::ifstream& in)
+{
+    in.read((char*) this, sizeof(Subject));
+}
+
+void Subject::write(std::ofstream& in)
+{
+    in.write((char*) this, sizeof(Subject));
+}
+
+bool Subject::operator==(const Subject& other)
+{
+    return id_ == other.id_;
 }
 
 #endif

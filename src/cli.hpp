@@ -7,6 +7,7 @@
 #include "degree.hpp"
 #include "subject.hpp"
 #include "linked_list.hpp"
+#include "relation.hpp"
 
 #ifdef _WIN32
 const std::string CLEAR = "cls";
@@ -24,6 +25,7 @@ const std::string PAUSE_MESSAGE = " Presiona enter...";
 const std::string PROMPT_POSITIVE_INTEGER = " Ingresa un entero positivo: ";
 const std::string HEADER_DEGREE = "Programas educativos";
 const std::string HEADER_SUBJECT = "Asignaturas";
+const std::string HEADER_RELATION = "Relacion de materias";
 
 enum menu_option
 {
@@ -35,7 +37,8 @@ enum menu_option
     SEARCH  = 3,
     EDIT    = 4,
     DELETE  = 5,
-    GO_BACK = 6
+    GO_BACK = 6,
+    ADD_SUBJECT = 7
 };
 
 // Input functions ---------------------------------------------------------
@@ -72,6 +75,17 @@ std::string get_string()
     std::string str;
     getline(std::cin, str);
     return str;
+}
+
+char get_char()
+{
+    char c;
+    while (!(std::cin >> c))
+    {
+        std::cin.clear();
+        std::cin.ignore();
+    }
+    return c;
 }
 
 // Menus, messages and interface functions -------------------------------------
@@ -115,7 +129,12 @@ void display_sec_menu(const std::string header)
     std::cout << " " << SEARCH   << ".- Buscar   " << std::endl;
     std::cout << " " << EDIT     << ".- Modificar" << std::endl;
     std::cout << " " << DELETE   << ".- Eliminar " << std::endl;
-    std::cout << " " << GO_BACK  << ".- Regresar " << std::endl << std::endl;
+    std::cout << " " << GO_BACK  << ".- Regresar " << std::endl;
+    if (header == HEADER_DEGREE)
+    {
+        std::cout << " " << ADD_SUBJECT  << ".- Agregar materia " << std::endl;
+    }
+    std::cout << std::endl;
     std::cout << " Opcion: ";
 }
 
@@ -123,7 +142,7 @@ int prompt_id()
 {
     std::cout << " Ingresa el ID: ";
     return get_positive_int();
-} 
+}
 
 void record_not_found()
 {
@@ -134,6 +153,48 @@ void option_not_found()
 {
     std::cout << OPTION_NOT_FOUND << std::endl;
 }
+
+// 'Relation' specific functions -----------------------------------------------
+void set_relation(Relation& relation)
+{
+    std::cout << "  ID del programa: ";
+    relation.set_degree_id(get_positive_int());
+    std::cout << " ID de la materia: ";
+    relation.set_subject_id(get_positive_int());
+    std::cout << "  Tipo de materia: ";
+    relation.set_type(get_char());
+}
+
+void print_relation_header(bool title = false)
+{
+    if (title)
+    {
+        std::cout << " ";
+        for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+        std::cout << std::endl;
+        print_centered(HEADER_RELATION);
+    }
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
+    std::cout << std::setw(20)  << std::left << (" " + ver_s + " ID del programa");
+    std::cout << std::setw(20) << std::left << (ver_s + " ID de la materia");
+    std::cout << std::setw(38)  << std::left << (ver_s + " Tipo");
+    std::cout << ver_s << std::endl;
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
+}
+
+void print_relation(const Relation& relation)
+{
+    std::string s = ver_s + " ";
+    std::cout << std::setw(20)  << std::left << (" " + s + std::to_string(relation.get_degree_id()));
+    std::cout << std::setw(20) << std::left << (s + std::to_string(relation.get_subject_id()));
+    std::cout << std::setw(38)  << std::left << (s + std::to_string(relation.get_type()));
+    std::cout << ver_s << std::endl;
+}
+
 
 // 'Degree' specific functions -------------------------------------------------
 
@@ -194,25 +255,52 @@ void print_degree(const Degree& degree)
 
 // 'Subject' specific functions ------------------------------------------------
 
-void set_subject(Subject& subject)
+void set_subject(Subject& subject, bool edit = false)
 {
-    // Prompts user to enter the data needed for a subject
     std::string str;
+    if (edit)
+    {
+        std::cout << " Ingresa los nuevos datos: " << std::endl;
+    }
+    std::cout << "       ID: ";
     subject.set_id(get_positive_int());
     do
     {
+        std::cout << "   Nombre: ";
         str = get_string();
     } while (!subject.set_name(str.c_str()));
+    std::cout << " Creditos: ";
     subject.set_credits(get_positive_int());
+}
+
+void print_subject_header(bool title = false)
+{
+    if (title)
+    {
+        std::cout << " ";
+        for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+        std::cout << std::endl;
+        print_centered(HEADER_SUBJECT);
+    }
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
+    std::cout << std::setw(5)  << std::left << (" " + ver_s + " ID");
+    std::cout << std::setw(65) << std::left << (ver_s + " Nombre");
+    std::cout << std::setw(8)  << std::left << (ver_s + " Cred");
+    std::cout << ver_s << std::endl;
+    std::cout << " ";
+    for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
+    std::cout << std::endl;
 }
 
 void print_subject(const Subject& subject)
 {
-    //TODO [FIX] Alligment
-    // Prints data contained by subject
-    std::cout << subject.get_id() << "\t";
-    std::cout << subject.get_name() << "\t";
-    std::cout << subject.get_credits() << "\n";
+    std::string s = ver_s + " ";
+    std::cout << std::setw(5)  << std::left << (" " + s + std::to_string(subject.get_id()));
+    std::cout << std::setw(65) << std::left << (s + subject.get_name());
+    std::cout << std::setw(8)  << std::left << (s + std::to_string(subject.get_credits()));
+    std::cout << ver_s << std::endl;
 }
 
 #endif

@@ -8,6 +8,7 @@
 #include "degree.hpp"
 #include "subject.hpp"
 #include "linked_list.hpp"
+#include "relation.hpp"
 
 void manage_degrees();
 void manage_subjects();
@@ -17,12 +18,16 @@ void list_degrees();
 Degree search_degree();
 void edit_degree();
 void delete_degree();
-int find_degree(int id);
+void add_subject_to_degree();
+int find_degree(unsigned int id);
 int get_degree_address(Degree degree);
 
-linked_list<Subject> ls_common_part;
-linked_list<Subject> ls_degree_required;
-linked_list<Subject> ls_foreign_language;
+void add_subject();
+void list_subject();
+Subject search_subject();
+void edit_subject();
+void delete_subject();
+int find_subject(unsigned int id);
 
 int main()
 {
@@ -76,6 +81,9 @@ void manage_degrees()
             case GO_BACK:
                 go_back = true;
                 break;
+            case ADD_SUBJECT:
+                add_subject_to_degree();
+                break;
             default:
                 std::cout << OPTION_NOT_FOUND << std::endl;
                 pause_program();
@@ -93,14 +101,19 @@ void manage_subjects()
         switch(get_int())
         {
             case ADD:
+                add_subject();
                 break;
             case LIST:
+                list_subject();
                 break;
             case SEARCH:
+                search_subject();
                 break;
             case EDIT:
+                edit_subject();
                 break;
             case DELETE:
+                delete_subject();
                 break;
             case GO_BACK:
                 go_back = true;
@@ -167,7 +180,7 @@ void edit_degree()
     Degree degree;
     std::ofstream out;
     degree = search_degree();
-    if (degree.get_id() == -1) return;
+    if (degree.get_id() == (unsigned)-1) return;
     p = find_degree(degree.get_id());
     set_degree(degree, true);
     out.open(DEGREES_FILE, std::ios::out | std::ios::in);
@@ -182,7 +195,7 @@ void delete_degree()
     std::ifstream in;
     std::ofstream out;
     degree = search_degree();
-    if (degree.get_id() == -1) return;
+    if (degree.get_id() == (unsigned)-1) return;
     in.open(DEGREES_FILE);
     out.open(TEMPORAL_FILE, std::ios::out);
     while(in.get() != EOF)
@@ -198,7 +211,65 @@ void delete_degree()
     std::rename(TEMPORAL_FILE.c_str(), DEGREES_FILE.c_str());
 }
 
-int find_degree(int id)
+int find_relation(const Relation &relation)
+{
+    Relation aux;
+    std::ifstream in;
+    in.open(RELATIONS_FILE);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        aux.read(in);
+        if (aux == relation)
+        {
+            int p = in.tellg();
+            return p;
+        }
+    }
+    in.close();
+    return -1;
+}
+
+Relation search_relation()
+{
+    Relation relation, empty;
+    std::ifstream in;
+    set_relation(relation);
+    int p = find_relation(relation);
+    if (p == -1)
+    {
+        record_not_found();
+        return empty;
+    }
+    in.open(DEGREES_FILE);
+    in.seekg(p, std::ios::beg);
+    relation.read(in);
+    in.close();
+    std::cout << std::endl;
+    print_relation_header();
+    print_relation(relation);
+    std::cout << std::endl;
+    return relation;
+}
+
+void add_subject_to_degree()
+{
+    Degree degree;
+    std::ofstream out;
+    Relation relation;
+    relation = search_relation();
+    //TODO Validate the degree and subject
+    if (relation.get_degree_id() != (unsigned)-1)
+    {
+        std::cout << "Esa relacion ya existe, eliminela antes" << "\n"; //TODO move to cli
+        return;
+    }
+    out.open(RELATIONS_FILE, std::ios::app);
+    degree.write(out);
+    out.close();
+}
+
+int find_degree(unsigned int id)
 {
     Degree degree;
     std::ifstream in;
@@ -206,10 +277,114 @@ int find_degree(int id)
     while(in.get() != EOF)
     {
         in.seekg(-1, std::ios::cur);
-        int p = in.tellg();
         degree.read(in);
         if (degree.get_id() == id)
         {
+            int p = in.tellg();
+            return p;
+        }
+    }
+    in.close();
+    return -1;
+}
+
+void add_subject()
+{
+    Subject subject;
+    std::ofstream out;
+    set_subject(subject);
+    out.open(SUBJECTS_FILE, std::ios::app);
+    subject.write(out);
+    out.close();
+}
+
+void list_subject()
+{
+    Subject subject;
+    std::ifstream in;
+    in.open(SUBJECTS_FILE);
+    clear_screen();
+    print_subject_header(true);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        subject.read(in);
+        print_subject(subject);
+    }
+    in.close();
+    std::cout << std::endl;
+}
+
+Subject search_subject()
+{
+    Subject subject, empty;
+    std::ifstream in;
+    int p = find_subject(prompt_id());
+    if (p == -1)
+    {
+        record_not_found();
+        return empty;
+    }
+    in.open(SUBJECTS_FILE);
+    in.seekg(p, std::ios::beg);
+    subject.read(in);
+    in.close();
+    std::cout << std::endl;
+    print_subject_header();
+    print_subject(subject);
+    std::cout << std::endl;
+    return subject;
+}
+
+void edit_subject()
+{
+    int p;
+    Subject subject;
+    std::ofstream out;
+    subject = search_subject();
+    if (subject.get_id() == (unsigned)-1) return;
+    p = find_subject(subject.get_id());
+    set_subject(subject, true);
+    out.open(SUBJECTS_FILE, std::ios::out | std::ios::in);
+    out.seekp(p, std::ios::beg);
+    subject.write(out);
+    out.close();
+}
+
+void delete_subject()
+{
+    Subject subject, holder;
+    std::ifstream in;
+    std::ofstream out;
+    subject = search_subject();
+    if (subject.get_id() == (unsigned)-1) return;
+    in.open(SUBJECTS_FILE);
+    out.open(TEMPORAL_FILE, std::ios::out);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        holder.read(in);
+        if (holder == subject) continue;
+        holder.write(out);
+    }
+    in.close();
+    out.close();
+    std::remove(SUBJECTS_FILE.c_str());
+    std::rename(TEMPORAL_FILE.c_str(), SUBJECTS_FILE.c_str());
+}
+
+int find_subject(unsigned int id)
+{
+    Subject degree;
+    std::ifstream in;
+    in.open(SUBJECTS_FILE);
+    while(in.get() != EOF)
+    {
+        in.seekg(-1, std::ios::cur);
+        degree.read(in);
+        if (degree.get_id() == id)
+        {
+            int p = in.tellg();
             return p;
         }
     }
