@@ -24,6 +24,7 @@ Degree search_degree();
 void edit_degree();
 void delete_degree();
 void add_subject_to_degree();
+void remove_subject_to_degree();
 
 void add_subject();
 void list_subjects();
@@ -61,6 +62,10 @@ int main()
                 break;
             case ADD_SUBJECT:
                 add_subject_to_degree();
+                pause_program();
+                break;
+            case REMOVE_SUBJECT:
+                remove_subject_to_degree();
                 pause_program();
                 break;
             case REPORTS:
@@ -381,6 +386,38 @@ void delete_subject()
         }
     }
     subjects.remove(subject);
+}
+
+void remove_subject_to_degree()
+{
+    Relation relation;
+    Degree degree;
+    Subject subject;
+
+    std::cout << " ID del programa educativo: "; //TODO change to cli
+    relation.set_degree_id(get_positive_int());
+    degree.set_id(relation.get_degree_id());
+    if (degrees.find(degree) == degrees.end())
+    {
+        std::cout << " No existe ese programa." << std::endl;
+        return;
+    }
+
+    std::cout << " ID de la materia: "; //TODO change to cli
+    relation.set_subject_id(get_positive_int());
+    subject.set_id(relation.get_subject_id());
+    if (subjects.find(subject) == subjects.end())
+    {
+        std::cout << " No existe esa materia." << std::endl;
+        return;
+    }
+
+    if (relations.find(relation) == relations.end())
+    {
+        std::cout << " Esa relacion no existe." << std::endl;
+        return;
+    }
+    relations.remove(relation);
 }
 
 void add_subject_to_degree()

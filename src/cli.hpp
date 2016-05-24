@@ -33,8 +33,9 @@ enum menu_option
     DEGREE  = 1,
     SUBJECT = 2,
     ADD_SUBJECT = 3,
-    REPORTS = 4,
-    EXIT    = 5,
+    REMOVE_SUBJECT = 4,
+    REPORTS = 5,
+    EXIT    = 6,
     ADD     = 1,
     LIST    = 2,
     SEARCH  = 3,
@@ -122,6 +123,7 @@ void display_main_menu()
     std::cout << " " << DEGREE << ".- Programas educativos" << std::endl;
     std::cout << " " << SUBJECT << ".- Asignaturas         " << std::endl;
     std::cout << " " << ADD_SUBJECT << ".- Asignar materia a programa" << std::endl;
+    std::cout << " " << REMOVE_SUBJECT << ".- Eliminar materia de un programa" << std::endl;
     std::cout << " " << REPORTS << ".- Reportes         " << std::endl;
     std::cout << " " << EXIT << ".- Salir               " << std::endl << std::endl;
     std::cout << " Opcion: ";
