@@ -32,15 +32,15 @@ enum menu_option
 {
     DEGREE  = 1,
     SUBJECT = 2,
-    REPORTS = 3,
-    EXIT    = 4,
+    ADD_SUBJECT = 3,
+    REPORTS = 4,
+    EXIT    = 5,
     ADD     = 1,
     LIST    = 2,
     SEARCH  = 3,
     EDIT    = 4,
     DELETE  = 5,
     GO_BACK = 6,
-    ADD_SUBJECT = 7,
     BY_CATEGORY = 1,
     BY_DEGREE = 2
 };
@@ -89,6 +89,7 @@ char get_char()
         std::cin.clear();
         std::cin.ignore();
     }
+    std::cin.ignore();
     return c;
 }
 
@@ -118,10 +119,11 @@ void display_main_menu()
 {
     clear_screen();
     print_centered("Malla Curricular");
-    std::cout << " 1.- Programas educativos" << std::endl;
-    std::cout << " 2.- Asignaturas         " << std::endl;
-    std::cout << " 3.- Reportes         " << std::endl;
-    std::cout << " 4.- Salir               " << std::endl << std::endl;
+    std::cout << " " << DEGREE << ".- Programas educativos" << std::endl;
+    std::cout << " " << SUBJECT << ".- Asignaturas         " << std::endl;
+    std::cout << " " << ADD_SUBJECT << ".- Asignar materia a programa" << std::endl;
+    std::cout << " " << REPORTS << ".- Reportes         " << std::endl;
+    std::cout << " " << EXIT << ".- Salir               " << std::endl << std::endl;
     std::cout << " Opcion: ";
 }
 
@@ -285,7 +287,7 @@ void set_subject(Subject& subject, bool edit = false)
     subject.set_credits(get_positive_int());
 }
 
-void print_subject_header(bool title = false)
+void print_subject_header(bool title, bool type = false)
 {
     if (title)
     {
@@ -298,7 +300,15 @@ void print_subject_header(bool title = false)
     for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
     std::cout << std::endl;
     std::cout << std::setw(5)  << std::left << (" " + ver_s + " ID");
-    std::cout << std::setw(65) << std::left << (ver_s + " Nombre");
+    if (type)
+    {
+        std::cout << std::setw(45) << std::left << (ver_s + " Nombre");
+        std::cout << std::setw(20) << std::left << (ver_s + " Tipo");
+    }
+    else
+    {
+        std::cout << std::setw(65) << std::left << (ver_s + " Nombre");
+    }
     std::cout << std::setw(8)  << std::left << (ver_s + " Cred");
     std::cout << ver_s << std::endl;
     std::cout << " ";
@@ -306,11 +316,29 @@ void print_subject_header(bool title = false)
     std::cout << std::endl;
 }
 
-void print_subject(const Subject& subject)
+void print_subject(const Subject& subject, char type = '\x0')
 {
     std::string s = ver_s + " ";
     std::cout << std::setw(5)  << std::left << (" " + s + std::to_string(subject.get_id()));
-    std::cout << std::setw(65) << std::left << (s + subject.get_name());
+    if (type == '\x0')
+    {
+        std::cout << std::setw(65) << std::left << (s + subject.get_name());
+    }
+    else
+    {
+        std::cout << std::setw(45) << std::left << (s + subject.get_name());
+        switch (type)
+        {
+            case 'b':
+                std::cout << std::setw(20) << std::left << (s + "Basica");
+                break;
+            case 'e':
+                std::cout << std::setw(20) << std::left << (s + "Especializante");
+                break;
+            case 'l':
+                std::cout << std::setw(20) << std::left << (s + "Lengua extranjera");
+        }
+    }
     std::cout << std::setw(8)  << std::left << (s + std::to_string(subject.get_credits()));
     std::cout << ver_s << std::endl;
 }

@@ -59,6 +59,10 @@ int main()
             case SUBJECT:
                 manage_subjects();
                 break;
+            case ADD_SUBJECT:
+                add_subject_to_degree();
+                pause_program();
+                break;
             case REPORTS:
                 manage_reports();
                 break;
@@ -109,12 +113,8 @@ void manage_degrees()
             case GO_BACK:
                 go_back = true;
                 break;
-            case ADD_SUBJECT:
-                add_subject_to_degree();
-                break;
             default:
                 std::cout << OPTION_NOT_FOUND << std::endl;
-                pause_program();
         }
         if (!go_back) pause_program();
     }
@@ -148,7 +148,6 @@ void manage_subjects()
                 break;
             default:
                 std::cout << OPTION_NOT_FOUND << std::endl;
-                pause_program();
         }
         if (!go_back) pause_program();
     }
@@ -260,7 +259,6 @@ void manage_reports()
                 break;
             default:
                 std::cout << OPTION_NOT_FOUND << std::endl;
-                pause_program();
         }
         if (!go_back) pause_program();
     }
@@ -283,15 +281,20 @@ void list_by_category()
     std::cout << "Ingrese la categoria (b/e/l):";
     char type = get_char();
 
-    if (type != 'b' || type != 'e' || type != 'l') return;
+    if (type != 'b' && type != 'e' && type != 'l')
+    {
+        std::cout << "Categoria invalida" << "\n";
+        return;
+    }
 
+    print_subject_header(true, true);
     Subject subject;
     for (auto it = relations.begin(); it != relations.end(); it++)
     {
         if (it->get_type() == type)
         {
             subject.set_id(it->get_subject_id());
-            print_subject((Subject)*subjects.find(subject));
+            print_subject((Subject)*subjects.find(subject), type);
         }
     }
 }
@@ -302,12 +305,13 @@ void list_by_degree()
     Degree degree;
     Subject subject;
     degree.set_id(prompt_id());
+    print_subject_header(true, true);
     for (auto it = relations.begin(); it != relations.end(); it++)
     {
         if (it->get_degree_id() == degree.get_id())
         {
             subject.set_id(it->get_subject_id());
-            print_subject((Subject)*subjects.find(subject));
+            print_subject((Subject)*subjects.find(subject), it->get_type());
         }
     }
     std::cout << std::endl;

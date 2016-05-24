@@ -25,6 +25,7 @@ public:
     void write(std::ofstream& in);
     void read(std::ifstream& in);
     bool operator==(const Relation& other);
+    bool operator<(const Relation& other);
 };
 
 Relation::Relation()
@@ -63,7 +64,7 @@ unsigned int Relation::get_subject_id() const
 
 bool Relation::set_type(char type)
 {
-    if (type != 'b' || type != 'e' || type != 'l') return false;
+    if (type != 'b' && type != 'e' && type != 'l') return false;
     type_ = type;
     return true;
 }
@@ -87,6 +88,15 @@ void Relation::write(std::ofstream& in)
 bool Relation::operator==(const Relation& other)
 {
     return degree_id_ == other.degree_id_ && subject_id_ == other.subject_id_;
+}
+
+bool Relation::operator<(const Relation& b)
+{
+    if (degree_id_ < b.get_degree_id()) return true;
+    if (degree_id_ > b.get_degree_id()) return false;
+    if (type_ < b.get_type()) return true;
+    if (type_ > b.get_type()) return false;
+    return subject_id_ < b.get_subject_id();
 }
 
 #endif
