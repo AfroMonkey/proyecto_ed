@@ -159,7 +159,7 @@ void add_degree()
     set_degree(degree);
     if (degrees.find(degree) != degrees.end())
     {
-        std::cout << "Ese programa ya existe" << "\n"; //TODO change to cli
+        std::cout << " Ya hay un programa con ese id." << std::endl; //TODO change to cli
         return;
     }
     degrees.push_back(degree);
@@ -183,7 +183,7 @@ Degree search_degree()
     degree.set_id(prompt_id());
     if (degrees.find(degree) == degrees.end())
     {
-        std::cout << "Ese programa no existe" << "\n"; //TODO change to cli
+        std::cout << " Ese programa educativo no existe." << std::endl; //TODO change to cli
         Degree empty;
         return empty;
     }
@@ -234,7 +234,7 @@ void add_subject()
     set_subject(subject);
     if (subjects.find(subject) != subjects.end())
     {
-        std::cout << "Esa materia ya existe" << "\n"; //TODO change to cli
+        std::cout << " Ya hay una materia con ese id." << std::endl; //TODO change to cli
         return;
     }
     subjects.push_back(subject);
@@ -278,12 +278,12 @@ void list_subjects()
 
 void list_by_category()
 {
-    std::cout << "Ingrese la categoria (b/e/l):";
+    std::cout << " Ingrese la categoria (b/e/l): ";
     char type = get_char();
 
     if (type != 'b' && type != 'e' && type != 'l')
     {
-        std::cout << "Categoria invalida" << "\n";
+        std::cout << " Categoria invalida." << std::endl;
         return;
     }
 
@@ -324,7 +324,7 @@ Subject search_subject()
     subject.set_id(prompt_id());
     if (subjects.find(subject) == subjects.end())
     {
-        std::cout << "Esa materia no existe" << "\n"; //TODO change to cli
+        std::cout << " Esa materia no existe" << std::endl; //TODO change to cli
         Subject empty;
         return empty;
     }
@@ -374,31 +374,31 @@ void add_subject_to_degree()
     Degree degree;
     Subject subject;
 
-    std::cout << "ID del programa educativo: "; //TODO change to cli
+    std::cout << " ID del programa educativo: "; //TODO change to cli
     relation.set_degree_id(get_positive_int());
     degree.set_id(relation.get_degree_id());
     if (degrees.find(degree) == degrees.end())
     {
-        std::cout << "No existe ese programa" << "\n";
+        std::cout << " No existe ese programa." << std::endl;
         return;
     }
 
-    std::cout << "ID de la materia: "; //TODO change to cli
+    std::cout << " ID de la materia: "; //TODO change to cli
     relation.set_subject_id(get_positive_int());
     subject.set_id(relation.get_subject_id());
     if (subjects.find(subject) == subjects.end())
     {
-        std::cout << "No existe esa materia" << "\n";
+        std::cout << " No existe esa materia." << std::endl;
         return;
     }
 
     if (relations.find(relation) != relations.end())
     {
-        std::cout << "Esa relacion ya existe" << "\n";
+        std::cout << " Esa relacion ya existe." << std::endl;
         return;
     }
 
-    std::cout << "Tipo de materia (b/e/l): "; //TODO change to cli
+    std::cout << " Tipo de materia (b/e/l): "; //TODO change to cli
     while (!relation.set_type(get_char()));
     relations.push_back(relation);
 }
