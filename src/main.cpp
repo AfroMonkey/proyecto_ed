@@ -312,6 +312,8 @@ void list_by_degree()
         std::cout << " Ese programa educativo no existe." << std::endl; //TODO change to cli
         return;
     }
+    print_degree_header(false);
+    print_degree(degree);
     print_subject_header(true, 2);
     for (auto it = relations.begin(); it != relations.end(); it++)
     {
