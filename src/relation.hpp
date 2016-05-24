@@ -25,7 +25,7 @@ public:
     void write(std::ofstream& in);
     void read(std::ifstream& in);
     bool operator==(const Relation& other);
-    bool operator<(const Relation& other);
+    bool operator<(const Relation& other) const;
 };
 
 Relation::Relation()
@@ -90,7 +90,7 @@ bool Relation::operator==(const Relation& other)
     return degree_id_ == other.degree_id_ && subject_id_ == other.subject_id_;
 }
 
-bool Relation::operator<(const Relation& b)
+bool Relation::operator<(const Relation& b) const
 {
     if (degree_id_ < b.get_degree_id()) return true;
     if (degree_id_ > b.get_degree_id()) return false;

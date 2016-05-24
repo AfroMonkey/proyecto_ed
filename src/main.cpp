@@ -312,7 +312,7 @@ void list_by_degree()
         std::cout << " Ese programa educativo no existe." << std::endl; //TODO change to cli
         return;
     }
-    print_degree_header(false);
+    print_degree_header(true);
     print_degree(degree);
     print_subject_header(true, 2);
     for (auto it = relations.begin(); it != relations.end(); it++)
@@ -415,5 +415,5 @@ void add_subject_to_degree()
 
     std::cout << " Tipo de materia (b/e/l): "; //TODO change to cli
     while (!relation.set_type(get_char()));
-    relations.push_back(relation);
+    relations.insert_ordered(relation);
 }
