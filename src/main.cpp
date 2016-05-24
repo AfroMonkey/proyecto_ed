@@ -287,14 +287,14 @@ void list_by_category()
         return;
     }
 
-    print_subject_header(true, true);
+    print_subject_header(true, 1);
     Subject subject;
     for (auto it = relations.begin(); it != relations.end(); it++)
     {
         if (it->get_type() == type)
         {
             subject.set_id(it->get_subject_id());
-            print_subject((Subject)*subjects.find(subject), type);
+            print_subject((Subject)*subjects.find(subject), 'x', it->get_degree_id());
         }
     }
 }
@@ -304,15 +304,28 @@ void list_by_degree()
     //TODO sort list
     Degree degree;
     Subject subject;
+    unsigned int credits = 0;
     degree.set_id(prompt_id());
-    print_subject_header(true, true);
+    degree = *degrees.find(degree);
+    if (degree.get_id() == (unsigned)-1)
+    {
+        std::cout << " Ese programa educativo no existe." << std::endl; //TODO change to cli
+        return;
+    }
+    print_subject_header(true, 2);
     for (auto it = relations.begin(); it != relations.end(); it++)
     {
         if (it->get_degree_id() == degree.get_id())
         {
             subject.set_id(it->get_subject_id());
             print_subject((Subject)*subjects.find(subject), it->get_type());
+            credits += subjects.find(subject)->get_credits();
         }
+    }
+    std::cout << " Creditos totales: " << credits << std::endl;
+    if (credits < degree.get_credits())
+    {
+        std::cout << " Alerta, el numero de creditos real es menor al indicado" << std::endl;
     }
     std::cout << std::endl;
 }

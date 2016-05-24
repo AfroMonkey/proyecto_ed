@@ -287,7 +287,7 @@ void set_subject(Subject& subject, bool edit = false)
     subject.set_credits(get_positive_int());
 }
 
-void print_subject_header(bool title, bool type = false)
+void print_subject_header(bool title, int type = 0)
 {
     if (title)
     {
@@ -300,14 +300,21 @@ void print_subject_header(bool title, bool type = false)
     for (int i = 0; i < kCols - 2; ++i) std::cout << hor_s;
     std::cout << std::endl;
     std::cout << std::setw(5)  << std::left << (" " + ver_s + " ID");
-    if (type)
+    if (type == 0)
     {
-        std::cout << std::setw(45) << std::left << (ver_s + " Nombre");
-        std::cout << std::setw(20) << std::left << (ver_s + " Tipo");
+        std::cout << std::setw(65) << std::left << (ver_s + " Nombre");
     }
     else
     {
-        std::cout << std::setw(65) << std::left << (ver_s + " Nombre");
+        std::cout << std::setw(45) << std::left << (ver_s + " Nombre");
+        if (type == 1)
+        {
+            std::cout << std::setw(20) << std::left << (ver_s + " ID Programa");
+        }
+        else
+        {
+            std::cout << std::setw(20) << std::left << (ver_s + " Tipo");
+        }
     }
     std::cout << std::setw(8)  << std::left << (ver_s + " Cred");
     std::cout << ver_s << std::endl;
@@ -316,13 +323,21 @@ void print_subject_header(bool title, bool type = false)
     std::cout << std::endl;
 }
 
-void print_subject(const Subject& subject, char type = '\x0')
+void print_subject(const Subject& subject, char type = '\x0', int id = 0)
 {
     std::string s = ver_s + " ";
     std::cout << std::setw(5)  << std::left << (" " + s + std::to_string(subject.get_id()));
-    if (type == '\x0')
+    if (type == '\x0' || type == 'x')
     {
-        std::cout << std::setw(65) << std::left << (s + subject.get_name());
+        if (id == 0)
+        {
+            std::cout << std::setw(65) << std::left << (s + subject.get_name());
+        }
+        else
+        {
+            std::cout << std::setw(45) << std::left << (s + subject.get_name());
+            std::cout << std::setw(20) << std::left << (s + std::to_string(id));
+        }
     }
     else
     {

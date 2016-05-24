@@ -19,11 +19,9 @@ public:
     unsigned int get_credits() const;
     bool set_division(const char *division);
     const char* get_division() const;
-    bool check_credits(); //TODO
     void read(std::ifstream& in);
     void write(std::ofstream& out);
     bool operator==(const Degree& other);
-    //linked_list< std::pair<unsigned int, char> > subjects_;
 private:
     unsigned int id_;
     char name_[DEGREE_NAME_LENGTH + 1];
